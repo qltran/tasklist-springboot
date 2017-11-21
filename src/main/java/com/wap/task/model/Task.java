@@ -1,25 +1,50 @@
 package com.wap.task.model;
 
-import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.google.gson.annotations.Expose;
+
 import javax.persistence.JoinColumn;
 
 @Entity
 @Table(name = "task")
 public class Task {
+	@Expose(serialize = false, deserialize = false)
 	private Long id;
+	@Expose
 	private String task;
+	@Expose
 	private String due;
-	private int priority;
+	@Expose
+	private String priority;
+	@Expose
 	private String category;
-	private String status;
-	private User user;
+	@Expose
+	private String complete;
+	@Expose
+	private String username;
+	
+	public Task update(String task, String due, String category) {
+		this.task = task;
+		this.due = due;
+		this.category = category;
+		return this;
+	}
+	
+	public Task() {
+	}
+	
+	public Task (String task, String due, String category) {
+		this.task = task;
+        this.due = due;
+        this.category = category;
+	}
 	
 	public Task(long id, String task, String due, String category) {
         this.id = id;
@@ -45,11 +70,11 @@ public class Task {
 	public void setTask(String name) {
 		this.task = name;
 	}
-	public int getPriority() {
+	public String getPriority() {
 		return priority;
 	}
 	
-	public void setPriority(int priority) {
+	public void setPriority(String priority) {
 		this.priority = priority;
 	}
 	public String getDue() {
@@ -66,20 +91,18 @@ public class Task {
 		this.category = category;
 	}
 	
-	public String getStatus() {
-		return status;
+	public String getComplete() {
+		return complete;
 	}
-	public void setStatus(String status) {
-		this.status = status;
+	public void setComplete(String status) {
+		this.complete = status;
 	}
 	
-	@ManyToOne
-	@JoinColumn(name = "user_id")
-	public User getUser() {
-		return user;
+	public String getUsername() {
+		return username;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 }

@@ -9,6 +9,9 @@ storageEngine = function() {
 
 	
 	return {
+		clear: function(){
+			initializedObjectStores = {};
+		},
 		init : function(successCallback, errorCallback) {
 			if (window.localStorage) {
 				initialized = true;

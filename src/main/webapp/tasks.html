@@ -1,98 +1,287 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>Task list</title>
-<link rel="stylesheet" type="text/css" href="resources/styles/tasks.css"	media="screen" />
+<meta charset="UTF-8">
+<title>TaskList</title>
 <script src="resources/scripts/jquery-2.0.3.js"></script>
 <script src="resources/scripts/jquery-tmpl.js"></script>
 <script src="resources/scripts/jquery.validate.js"></script>
 <script src="resources/scripts/jquery-serialization.js"></script>
 <script src="resources/scripts/tasks-controller.js"></script>
-<script src="resources/scripts/date.js"></script>
+<script src="resources/scripts/date.js"></script>	
+
+<link rel="stylesheet" href="resources/styles/mdl/material.min.css">
+<link rel="stylesheet" href="resources/styles/customize.css">
+
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	
 </head>
 <body>
-	<header>
-		<span>Task list</span>
-	</header>
-	<main  id="taskPage">
-	<section id="taskCreation" class="not">
-		<form id="taskForm">
-			<input type="hidden" name="id"/>
-			<div>
-				<label>Task</label> <input type="text" required="required"
-					name="task" class="large" placeholder="Breakfast at Tiffanys" maxlength="200"  />
+	<!-- Always shows a header, even in smaller screens. -->
+	<div
+		class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer">
+		<header class="mdl-layout__header">
+			<div class="mdl-layout__header-row">
+				<!-- Title -->
+				<span class="mdl-layout-title">Task List</span>
+				<!-- Add spacer, to align navigation to the right -->
+				<div class="mdl-layout-spacer"></div>
+				<!-- Navigation. We hide it in small screens. -->
+				<nav class="mdl-navigation mdl-layout--large-screen-only">
+					<a class="mdl-navigation__link" href=""><i
+						class="material-icons mdl-list__item-icon white">list</i>Tasks</a> <a
+						class="mdl-navigation__link" href=""><i
+						class="material-icons mdl-list__item-icon">group</i>Teams</a>
+				</nav>
 			</div>
-			<div>
-				<label>Required by</label> <input type="date" required="required"
-					name="due" />
+		</header>
+		<main class="mdl-layout__content" id="taskPage">
+		<div class="page-content">
+			<div class="mdl-grid">
+				<div class="mdl-cell mdl-cell--5-col">
+					<div>
+						<h3>
+							<i class="material-icons mdl-list__item-icon">add</i> Add Task
+						</h3>
+					</div>
+					<section id="taskCreation" class="not">
+						<form id="taskForm">
+							<input type="hidden" name="id" />
+							<div>
+								<input class="mdl-textfield__input" id="task" type="text"
+									required="required" name="task"
+									placeholder="Task Title Here..." />
+							</div>
+							<br>
+							<div>
+								<label>User</label> <select name="username"
+									class="mdl-textfield__input">
+									<option value=""></option>
+									<option value="first@email.com">First user</option>
+									<option value="second@email.com">Second user</option>
+									<option value="third@email.com">Third user</option>
+									<option value="fourth@email.com">Fourth user</option>
+									<option value="fifth@email.com">Fifth user</option>
+									<option value="sixth@email.com">Sixth user</option>
+									<option value="seventh@email.com">Seventh user</option>
+									<option value="eighth@email.com">Eighth user</option>
+									<option value="tenth@email.com">Tenth user</option>
+								</select>
+							</div>
+							<br>
+
+							<div>
+								<label>Date</label> <input type="date" required="required"
+									name="due" class="mdl-textfield__input" />
+							</div>
+							<br>
+							<div>
+								<label>Category</label> <select name="category"
+									class="mdl-textfield__input">
+									<option value="Personal">Personal</option>
+									<option value="Work">Work</option>
+								</select>
+							</div>
+							<br>
+							<div>
+								<label>Priority</label> <select name="priority"
+									class="mdl-textfield__input">
+									<option value="Low">Low</option>
+									<option value="Normal">Normal</option>
+									<option value="High">High</option>
+								</select>
+							</div>
+							<br>
+							<nav>
+								<button class="mdl-button mdl-js-button mdl-button--raised"
+									id="saveTask">Save task</button>
+
+								<button class="mdl-button mdl-js-button mdl-button--raised"
+									id="clearTask">Clear task</button>
+							</nav>
+						</form>
+					</section>
+					<br> <br> <br>
+					<div>
+						<h3>
+							<i class="material-icons mdl-list__item-icon">list</i> Task List
+						</h3>
+					</div>
+					<section>
+						<table id="tblTasks"
+							class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+							<colgroup>
+								<col width="40%">
+								<col width="15%">
+								<col width="15%">
+								<col width="15%">
+								<col width="15%">
+								<col width="30%">
+							</colgroup>
+							<thead>
+								<tr>
+									<th class="mdl-data-table__cell">Name</th>
+									<th class="mdl-data-table__cell">Due</th>
+									<th class="mdl-data-table__cell">Category</th>
+									<th class="mdl-data-table__cell">User</th>
+									<th class="mdl-data-table__cell">Priority</th>
+									<th class="mdl-data-table__cell">Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						
+						<br>
+						<div>
+							<input class="mdl-textfield__input" id="filter-task" type="text"
+								placeholder="Filter Tasks by Username Here..." />
+							<button id="btnFilterTask"
+								class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-button--mini-fab">
+								<i class="material-icons">Filter</i>
+							</button>
+						</div>
+							
+						<br>
+						<div>
+							<button id="btnAddTask"
+								class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-button--mini-fab">
+								<i class="material-icons">add</i>
+							</button>
+
+							<button id="btnRetrieveTasks"
+								class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-button--mini-fab">
+								<i class="material-icons">refresh</i>
+							</button>
+						</div>
+					</section>
+				</div>
+				<div class="mdl-cell mdl-cell--2-col"></div>
+				
+				
+				
+				
+				<div class="mdl-cell mdl-cell--5-col">
+					<div>
+						<h3>
+							<i class="material-icons mdl-list__item-icon">group</i> Add team
+						</h3>
+					</div>
+					<section id="teamCreation" class="not">
+						<form id="teamForm">
+							<input type="hidden" name="id" />
+							<div>
+								<input class="mdl-textfield__input" id="teamName" type="text"
+									required="required" name="name"
+									placeholder="Team Name Here..." />
+							</div>
+							<br>
+							<nav>
+								<button class="mdl-button mdl-js-button mdl-button--raised"
+									id="saveTeam">Save team</button>
+
+								<button class="mdl-button mdl-js-button mdl-button--raised"
+									id="clearTeam">Clear team</button>
+							</nav>
+						</form>
+					</section>
+					
+					<section id="memberAdd" class="not">
+						<form id="memberForm">
+							<input type="hidden" name="id" id="teamId"/>
+							<div>
+								<label>User</label> <select name="username" id="member"
+									class="mdl-textfield__input">
+									<option value=""></option>
+									<option value="first@email.com">First user</option>
+									<option value="second@email.com">Second user</option>
+									<option value="third@email.com">Third user</option>
+									<option value="fourth@email.com">Fourth user</option>
+									<option value="fifth@email.com">Fifth user</option>
+									<option value="sixth@email.com">Sixth user</option>
+									<option value="seventh@email.com">Seventh user</option>
+									<option value="eighth@email.com">Eighth user</option>
+									<option value="tenth@email.com">Tenth user</option>
+								</select>
+							</div>
+							<nav>
+								<button class="mdl-button mdl-js-button mdl-button--raised" id="btnAddMember">Add</button>
+							</nav>
+						</form>
+					</section>
+					
+					<br> <br> <br>
+					<div>
+						<h3>
+							<i class="material-icons mdl-list__item-icon">list</i> Team List
+						</h3>
+					</div>
+					<section>
+						<table id="tblTeams"
+							class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+							<colgroup>
+								<col width="20%">
+								<col width="25%">
+								<col width="25%">
+								<col width="5%">
+							</colgroup>
+							<thead>
+								<tr>
+									<th class="mdl-data-table__cell--non-numeric">Name</th>
+									<th class="mdl-data-table__cell--non-numeric">Users</th>
+									<th class="mdl-data-table__cell--non-numeric">Tasks</th>
+									<th class="mdl-data-table__cell--non-numeric">Action</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<br>
+						<nav>
+							<button id="btnAddTeam"
+								class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-button--mini-fab">
+								<i class="material-icons">add</i>
+							</button>
+
+							<button id="btnRetrieveTeams"
+								class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-button--mini-fab">
+								<i class="material-icons">refresh</i>
+							</button>
+						</nav>
+					</section>
+				</div>
 			</div>
-			<div>
-				<label>Category</label> <select name="category">
-					<option value="Personal">Personal</option>
-					<option value="Work">Work</option>
-				</select>
-			</div>
-			<nav>
-				<a href="#" id="saveTask">Save task</a>    <!-- https://stackoverflow.com/questions/4855168/what-is-href-and-why-is-it-used -->
-				<a href="#" id="clearTask">Clear task</a>
-			</nav>
-		</form>
-	</section>
-	<section>
-		<table id="tblTasks">
-			<colgroup>
-				<col width="40%">
-				<col width="15%">
-				<col width="15%">
-				<col width="30%">
-			</colgroup>
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Due</th>
-					<th>Category</th>
-					<th>Actions</th>
-				</tr>
-			</thead>
-			<tbody>
-			</tbody>
-		</table>
-		<nav>
-			<a href="#" id="btnAddTask">Add task</a>
-			<a href="#" id="btnRetrieveTasks">Retrieve tasks from server</a>
-		</nav>
-	</section>
-	</main>
-	<footer>You have <span id="taskCount"></span> tasks</footer>
+		</div>
+		</main>
+	</div>
 </body>
+
 <script>
-function initScreen() {
-	$(document).ready(function() {
-		tasksController.init($('#taskPage'), function() {
-			tasksController.loadTasks();
-		});		
-	});
-}
-if (window.indexedDB) { 
-	console.log("using indexedDB 111917kl");
-	$.getScript( "resources/scripts/tasks-indexeddb.js" )
-	.done(function( script, textStatus ) {
-		initScreen();
-	})
-	.fail(function( jqxhr, settings, exception ) {
-		console.log( 'Failed to load indexed db script' );
-	});
-} else if (window.localStorage) {
-	console.log("using webstorage 111917kl");
-	$.getScript( "resources/scripts/tasks-webstorage.js" )
-	.done(function( script, textStatus ) {
-		initScreen();
-	})
-	.fail(function( jqxhr, settings, exception ) {
-		console.log( 'Failed to load web storage script' );
-	});
-}
+	function initScreen() {
+		$(document).ready(function() {
+			tasksController.init($('#taskPage'), function() {
+				tasksController.loadTasks();
+			});
+		});
+	}
+	if (window.indexedDB) {
+		console.log("using indexedDB 111917kl");
+		$.getScript("resources/scripts/tasks-indexeddb.js").done(
+				function(script, textStatus) {
+					initScreen();
+				}).fail(function(jqxhr, settings, exception) {
+			console.log('Failed to load indexed db script');
+		});
+	} else if (window.localStorage) {
+		console.log("using webstorage 111917kl");
+		$.getScript("resources/scripts/tasks-webstorage.js").done(
+				function(script, textStatus) {
+					initScreen();
+				}).fail(function(jqxhr, settings, exception) {
+			console.log('Failed to load web storage script');
+		});
+	}
 </script>
 
 <script id="taskRow" type="text/x-jQuery-tmpl">
@@ -100,9 +289,11 @@ if (window.indexedDB) {
 	<td {{if complete == true}}class="taskCompleted"{{/if}}>${task}</td>
 	<td {{if complete == true}}class="taskCompleted"{{/if}}><time datetime="${due}">${due}</time></td>
 	<td {{if complete == true}}class="taskCompleted"{{/if}}>${category}</td>
+	<td {{if complete == true}}class="taskCompleted"{{/if}}>${username}</td>
+	<td {{if complete == true}}class="taskCompleted"{{/if}}>${priority}</td>
 	<td>
 		<nav>
-			{{if complete != true}}			
+			{{if complete != true && complete != 'true'}}			
 				<a href="#" class="editRow" data-task-id="${id}">Edit</a>
 				<a href="#" class="completeRow" data-task-id="${id}">Complete</a>
 			{{/if}}
@@ -112,6 +303,17 @@ if (window.indexedDB) {
 </tr>
 </script>
 
+<script id="teamRow" type="text/x-jQuery-tmpl">
+<tr>
+	<td class="long-word">${name}</td>
+	<td class="long-word">${usernames}</td>
+	<td>${tasks}</td>
+	<td><nav>
+		<a href="#" class="addRow" data-team-id="${id}">Add</a>
+		<a href="#" class="deleteRow" data-team-id="${id}">Delete</a>
+	</nav></td>
+</tr>
+</script>
 
+<!-- <script src="resources/styles/mdl/material.min.js"></script> -->
 </html>
-
