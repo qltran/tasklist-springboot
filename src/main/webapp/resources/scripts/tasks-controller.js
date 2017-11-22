@@ -87,6 +87,30 @@ tasksController = function() {
 					clearTask();
 				});
 
+				// Sort task by priority or due date by clicking on table row header
+                $(taskPage).find('#tblTasks thead > tr > th').click(function (evt) {
+                    let sortBy = evt.target.id;
+                    let sortFunction = sortMap[sortBy];
+                    if (sortFunction != null) {
+                        storageEngine.findAll('task', function(tasks) {
+                            tasks.sort(sortFunction);
+                            $(taskPage).find('#tblTasks tbody').empty();
+                            $('#taskRow').tmpl(tasks).appendTo($(taskPage).find('#tblTasks tbody'));
+                        }, errorLogger);
+					}
+                });
+                
+                var sortMap = {
+                        'header-priority' : function (task1, task2) {
+                            return task1.priority > task2.priority;
+                        },
+                        'header-due' : function (task1, task2) {
+                            return Date.parse(task1.due).compareTo(Date.parse(task2.due));
+                        },
+                        'header-user' : function (task1, task2) {
+                            return task1.userId < task2.userId;
+                        }
+                };
 
                 /**	 * 11/19/17kl        */
                 $(taskPage).find('#btnRetrieveTasks').click(function(evt) {
